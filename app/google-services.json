@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "872534620557",
+    "firebase_url": "https://pokedeck-f6c7a.firebaseio.com",
+    "project_id": "pokedeck-f6c7a",
+    "storage_bucket": "pokedeck-f6c7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872534620557:android:ae8a988505a139e5",
+        "android_client_info": {
+          "package_name": "com.example.danyllo.pokedeck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872534620557-5036spesmio78jqs8m8p5veao1vm10ic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.danyllo.pokedeck",
+            "certificate_hash": "4F3EEA38F048FD6C931E431477B0185F11600733"
+          }
+        },
+        {
+          "client_id": "872534620557-4lie8h77dmp1tecblci0tlftejs6p33g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWXsYEWPg5BUzJYKAEsSYKicS8JpPd_dQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872534620557-4lie8h77dmp1tecblci0tlftejs6p33g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

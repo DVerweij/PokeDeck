@@ -1,0 +1,67 @@
+package com.example.danyllo.pokedeck;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.layout.simple_list_item_1;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText searchET;
+    private ListView searchList;
+
+    private ArrayAdapter<String> searchAdapter;
+    private ArrayList<String> cardList = new ArrayList<String>();
+    private Map<String, JSONObject> cardMap = new HashMap<String, JSONObject>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initialize();
+    }
+
+    private void initialize() {
+        searchET = (EditText) findViewById(R.id.editText);
+        searchList = (ListView) findViewById(R.id.cardList);
+        searchAdapter = new ArrayAdapter<String>(this, simple_list_item_1, cardList);
+        searchList.setAdapter(searchAdapter);
+        searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Object cardName = searchList.getItemAtPosition(position);
+                //goToTitlePage(cardName.toString());
+            }
+        });
+    }
+
+    public void searchCard(View view) {
+        String name = searchET.getText().toString().trim();
+        AppSyncTask task = new AppSyncTask(this, "https://api.pokemontcg.io/v1/cards");
+        task.execute(name);
+        Log.d("W0t", name);
+    }
+
+    public void setData(ArrayList<String> names, Map<String, JSONObject> mapWithCards) {
+        cardList = names;
+        cardMap = mapWithCards;
+        searchAdapter.clear();
+        searchAdapter.addAll(cardList);
+        searchAdapter.notifyDataSetChanged();
+    }
+
+    /*public void goToList(View view) {
+    }*/
+}
