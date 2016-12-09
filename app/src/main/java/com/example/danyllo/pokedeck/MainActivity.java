@@ -1,5 +1,6 @@
 package com.example.danyllo.pokedeck;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> searchAdapter;
     private ArrayList<String> cardList = new ArrayList<String>();
-    private Map<String, JSONObject> cardMap = new HashMap<String, JSONObject>();
+    private Map<String, Card> cardMap = new HashMap<String, Card>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,18 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Object cardName = searchList.getItemAtPosition(position);
-                //goToTitlePage(cardName.toString());
+                goToTitlePage(cardName.toString());
             }
         });
+    }
+
+    private void goToTitlePage(String string) {
+        Log.d("STRING", string);
+        Log.d("STRING2", cardMap.get(string).toString());
+        //Card card = new Card(cardMap.get(string));
+        Intent cardActivity = new Intent(this, CardActivity.class);
+        cardActivity.putExtra("card", cardMap.get(string));
+        startActivity(cardActivity);
     }
 
     public void searchCard(View view) {
@@ -54,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("W0t", name);
     }
 
-    public void setData(ArrayList<String> names, Map<String, JSONObject> mapWithCards) {
+    public void setData(ArrayList<String> names, Map<String, Card> mapWithCards) {
         cardList = names;
         cardMap = mapWithCards;
         searchAdapter.clear();

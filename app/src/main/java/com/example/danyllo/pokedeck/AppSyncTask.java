@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -54,16 +55,24 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
             noData.show();
         } else {
             ArrayList<String> names = new ArrayList<String>();
-            Map<String, JSONObject> cardMap = new HashMap<String, JSONObject>();
+
+            Map<String, Card> cardMap = new HashMap<String, Card>();
             try {
                 JSONObject json = new JSONObject(result);
                 JSONArray listOfCards = json.getJSONArray("cards");
                 for(int i=0; i < listOfCards.length(); i++) {
                     JSONObject jsonObj = listOfCards.getJSONObject(i);
+                    Log.d("SIZE", String.valueOf(jsonObj.length()));
+                    /*Iterator iterator = jsonObj.keys();
+                    while(iterator.hasNext()){
+                        String key = (String)iterator.next();
+                        Log.d("KEY", key + jsonObj.getString(key));
+                    }*/
                     names.add(jsonObj.getString("name"));
-                    cardMap.put(jsonObj.getString("name"), jsonObj);
+                    cardMap.put(jsonObj.getString("name"), new Card(jsonObj));
+                    Log.d("MAP", jsonObj.toString());
                 }
-                Log.d("LOL", listOfCards.getJSONObject(0).getString("Title"));
+                Log.d("LOL", listOfCards.getJSONObject(0).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
