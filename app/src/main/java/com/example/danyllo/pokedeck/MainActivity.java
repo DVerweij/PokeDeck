@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchET;
     private ListView searchList;
 
-    private ArrayAdapter<String> searchAdapter;
-    private ArrayList<String> cardList = new ArrayList<String>();
+    //private CustomAdapter searchAdapter;
+    private ArrayList<Tuple> cardList = new ArrayList<Tuple>();
     private Map<String, Card> cardMap = new HashMap<String, Card>();
 
     @Override
@@ -38,23 +38,22 @@ public class MainActivity extends AppCompatActivity {
     private void initialize() {
         searchET = (EditText) findViewById(R.id.editText);
         searchList = (ListView) findViewById(R.id.cardList);
-        searchAdapter = new ArrayAdapter<String>(this, simple_list_item_1, cardList);
-        searchList.setAdapter(searchAdapter);
+        searchList.setAdapter(new CustomAdapter(this, cardList));
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Object cardName = searchList.getItemAtPosition(position);
-                goToTitlePage(cardName.toString());
+                Tuple cardNameAndID = cardList.get(position);
+                goToTitlePage(cardNameAndID);
             }
         });
     }
 
-    private void goToTitlePage(String string) {
-        Log.d("STRING", string);
-        Log.d("STRING2", cardMap.get(string).toString());
+    private void goToTitlePage(Tuple nameAndID) {
+        //Log.d("STRING", string);
+        //Log.d("STRING2", cardMap.get(string).toString());
         //Card card = new Card(cardMap.get(string));
         Intent cardActivity = new Intent(this, CardActivity.class);
-        cardActivity.putExtra("card", cardMap.get(string));
+        cardActivity.putExtra("card", cardMap.get(nameAndID.second));
         startActivity(cardActivity);
     }
 
@@ -65,12 +64,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d("W0t", name);
     }
 
-    public void setData(ArrayList<String> names, Map<String, Card> mapWithCards) {
+    public void setData(ArrayList<Tuple> names, Map<String, Card> mapWithCards) {
         cardList = names;
         cardMap = mapWithCards;
-        searchAdapter.clear();
-        searchAdapter.addAll(cardList);
-        searchAdapter.notifyDataSetChanged();
+        searchList.setAdapter(new CustomAdapter(this, names));
+        Log.d("GOT", "HERE");
     }
 
     /*public void goToList(View view) {

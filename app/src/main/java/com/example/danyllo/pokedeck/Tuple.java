@@ -15,4 +15,7 @@ public class Tuple implements Serializable{
         this.first = one;
         this.second = two;
     }
+    public String toString() {
+        return this.first + ": (" + this.second + ")";
+    }
 }

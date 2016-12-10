@@ -54,7 +54,7 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
             Toast noData = Toast.makeText(context, "No data was found", Toast.LENGTH_LONG);
             noData.show();
         } else {
-            ArrayList<String> names = new ArrayList<String>();
+            ArrayList<Tuple> names = new ArrayList<Tuple>();
 
             Map<String, Card> cardMap = new HashMap<String, Card>();
             try {
@@ -68,8 +68,8 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
                         String key = (String)iterator.next();
                         Log.d("KEY", key + jsonObj.getString(key));
                     }*/
-                    names.add(jsonObj.getString("name"));
-                    cardMap.put(jsonObj.getString("name"), new Card(jsonObj));
+                    names.add(new Tuple(jsonObj.getString("name"), jsonObj.getString("id")));
+                    cardMap.put(jsonObj.getString("id"), new Card(jsonObj));
                     Log.d("MAP", jsonObj.toString());
                 }
                 Log.d("LOL", listOfCards.getJSONObject(0).getString("name"));
