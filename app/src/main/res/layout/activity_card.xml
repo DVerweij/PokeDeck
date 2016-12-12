@@ -15,20 +15,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/name"
-        android:layout_weight="1" />
+        android:textAlignment="center" />
 
     <LinearLayout android:orientation="horizontal" android:layout_height="fill_parent" android:layout_width="fill_parent">
 
-        <LinearLayout android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="0dp">
+        <LinearLayout android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="0dp" android:orientation="vertical">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@android:drawable/screen_background_light_transparent"
                 android:id="@+id/imageView"
                 android:layout_weight="0.69" />
+
+            <Button
+                android:text="Add to Decklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="addToDeckList"
+                android:id="@+id/button4" />
+
         </LinearLayout>
         <LinearLayout android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="0dp"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:orientation="vertical">
 
             <ListView
                 android:layout_width="wrap_content"
@@ -37,7 +46,16 @@
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/detailList"
-                android:layout_weight="0.99" />
+                android:layout_weight="0.99" >
+
+            </ListView>
+
+            <Button
+                android:text="Go to Decklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToDeckList"
+                android:id="@+id/button6" />
 
         </LinearLayout>
     </LinearLayout>

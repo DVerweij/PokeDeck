@@ -1,9 +1,11 @@
 package com.example.danyllo.pokedeck;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -45,5 +47,15 @@ public class CardActivity extends AppCompatActivity {
     public void setBitmap(Bitmap picture) {
         Log.d("BITMAP", "HERE");
         cardImage.setImageBitmap(picture);
+    }
+
+    public void goToDeckList(View view) {
+        Intent deckList = new Intent(this, DeckActivity.class);
+        startActivity(deckList);
+    }
+
+    public void addToDeckList(View view) {
+        DeckActivity deckList = new DeckActivity();
+        deckList.deck.addCard(card);
     }
 }

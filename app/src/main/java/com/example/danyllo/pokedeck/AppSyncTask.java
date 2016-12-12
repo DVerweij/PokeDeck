@@ -31,6 +31,7 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
         Log.d("CONS", apiURL);
     }
 
+    //Extract from API using HttpParser class
     @Override
     protected String doInBackground(String... params) {
         HttpParser apiParser = new HttpParser(apiURL);
@@ -42,11 +43,13 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
         }
     }
 
+    //Simple toast notifying user that data is being gathered
     protected void onPreExecute(){
         Toast preexe = Toast.makeText(context, "Acquiring data", Toast.LENGTH_LONG);
         preexe.show();
     }
 
+    //Function which collects data and saves it in the activity
     protected void onPostExecute(String result){
         super.onPostExecute(result);
         Log.d("RESULT", result);

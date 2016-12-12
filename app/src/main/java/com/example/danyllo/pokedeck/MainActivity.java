@@ -19,12 +19,13 @@ import java.util.Map;
 
 import static android.R.layout.simple_list_item_1;
 
+/* The activity that the app starts with. It handels the searching of the pokemon cards based on name*/
 public class MainActivity extends AppCompatActivity {
-
+    //The views as global variables
     private EditText searchET;
     private ListView searchList;
-
-    //private CustomAdapter searchAdapter;
+    //The lists that will be filled by the searching of the cards
+    //Tuple is a simple pair class (in this case of two Strings)
     private ArrayList<Tuple> cardList = new ArrayList<Tuple>();
     private Map<String, Card> cardMap = new HashMap<String, Card>();
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         initialize();
     }
 
+    //Initialization function which sets up the views and the adapter for the listview
     private void initialize() {
         searchET = (EditText) findViewById(R.id.editText);
         searchList = (ListView) findViewById(R.id.cardList);
@@ -43,31 +45,31 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Tuple cardNameAndID = cardList.get(position);
-                goToTitlePage(cardNameAndID);
+                goToCardPage(cardNameAndID);
             }
         });
     }
 
-    private void goToTitlePage(Tuple nameAndID) {
-        //Log.d("STRING", string);
-        //Log.d("STRING2", cardMap.get(string).toString());
-        //Card card = new Card(cardMap.get(string));
+    //Function that on listView click goes to the Card found at the listView's child in question
+    private void goToCardPage(Tuple nameAndID) {
         Intent cardActivity = new Intent(this, CardActivity.class);
-        cardActivity.putExtra("card", cardMap.get(nameAndID.second));
+        cardActivity.putExtra("card", cardMap.get(nameAndID.second)); //Gets Card object from ID
         startActivity(cardActivity);
     }
 
+    //The search function
     public void searchCard(View view) {
-        String name = searchET.getText().toString().trim();
+        String name = searchET.getText().toString().trim(); //Trim for better effect
         AppSyncTask task = new AppSyncTask(this, "https://api.pokemontcg.io/v1/cards");
-        task.execute(name);
+        task.execute(name); //Execute the syncTask with the input of the EditText
         Log.d("W0t", name);
     }
 
+    //Function called from AppSyncTask which sets the data in the structures
     public void setData(ArrayList<Tuple> names, Map<String, Card> mapWithCards) {
         cardList = names;
         cardMap = mapWithCards;
-        searchList.setAdapter(new CustomAdapter(this, names));
+        searchList.setAdapter(new CustomAdapter(this, names)); //Also resets adapter
         Log.d("GOT", "HERE");
     }
 

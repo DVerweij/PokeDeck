@@ -14,7 +14,7 @@
 
 
     <Button
-        android:text="Decks"
+        android:text="Decklist"
         android:layout_width="match_parent"
         android:id="@+id/button"
         android:onClick="goToList"

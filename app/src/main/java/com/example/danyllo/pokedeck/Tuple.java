@@ -15,6 +15,8 @@ public class Tuple implements Serializable{
         this.first = one;
         this.second = two;
     }
+
+    //Function which returns both Strings in one String for use in a ListView
     public String toString() {
         return this.first + ": (" + this.second + ")";
     }
