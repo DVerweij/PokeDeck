@@ -1,5 +1,7 @@
 package com.example.danyllo.pokedeck;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,12 @@ import java.io.Serializable;
 public class Tuple implements Serializable{
     public String first;
     public String second;
+
+    //constructor for use with firebase
+    public Tuple() {
+        Log.d("CONSTRUCTED", "CONSTRUCTED");
+    }
+
     public Tuple (String one, String two) {
         this.first = one;
         this.second = two;

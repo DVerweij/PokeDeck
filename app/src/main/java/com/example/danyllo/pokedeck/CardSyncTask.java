@@ -29,15 +29,7 @@ public class CardSyncTask extends AsyncTask<Card, Integer, Bitmap> {
     @Override
     protected Bitmap doInBackground(Card... params) {
         String imageURL = params[0].getImageURL();
-        Log.d("URL", imageURL);
         Bitmap picture = null;
-        /*HttpParser apiParser = new HttpParser(apiURL);
-        try {
-            return apiParser.extractFromURL(params);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }*/
         try {
             InputStream input = new java.net.URL(imageURL).openStream();
             picture = BitmapFactory.decodeStream(input);

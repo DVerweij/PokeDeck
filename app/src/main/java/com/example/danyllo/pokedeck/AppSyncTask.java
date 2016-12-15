@@ -66,11 +66,6 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
                 for(int i=0; i < listOfCards.length(); i++) {
                     JSONObject jsonObj = listOfCards.getJSONObject(i);
                     Log.d("SIZE", String.valueOf(jsonObj.length()));
-                    /*Iterator iterator = jsonObj.keys();
-                    while(iterator.hasNext()){
-                        String key = (String)iterator.next();
-                        Log.d("KEY", key + jsonObj.getString(key));
-                    }*/
                     names.add(new Tuple(jsonObj.getString("name"), jsonObj.getString("id")));
                     cardMap.put(jsonObj.getString("id"), new Card(jsonObj));
                     Log.d("MAP", jsonObj.toString());

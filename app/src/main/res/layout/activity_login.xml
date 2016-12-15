@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_deck"
+    android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,52 +9,51 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.example.danyllo.pokedeck.DeckActivity">
+    tools:context="com.example.danyllo.pokedeck.LoginActivity">
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/email"
+        android:hint="E-mail" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:hint="Password" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <Button
+            android:text="Sign Up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/username"
+            android:id="@+id/signUp"
+            android:onClick="signUp"
             android:layout_weight="1" />
 
         <Button
-            android:text="Sign Out"
+            android:text="Sign In"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/signout"
-            android:onClick="logOut"
-            android:layout_weight="0.08" />
-
+            android:id="@+id/signIn"
+            android:onClick="signIn"
+            android:layout_weight="1" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deckRating"
-        android:layout_weight="1" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="278dp"
-        android:id="@+id/deckList"/>
-
     <Button
-        android:text="Generate random hand"
+        android:text="Continue Offline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button3"
-        android:onClick="generateHand"
-        android:layout_weight="0.01" />
-
-    <Button
-        android:text="Clear deck"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="clearDeck"
-        android:id="@+id/button5" />
+        android:onClick="offlineMode"
+        android:id="@+id/offline" />
 </LinearLayout>

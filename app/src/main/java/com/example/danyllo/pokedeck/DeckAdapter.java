@@ -28,10 +28,10 @@ public class DeckAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View rowView = inflater.inflate(R.layout.activity_list, parent, false);
         View rowView = inflater.inflate(R.layout.listview_row_item, parent, false);
         TextView listRow = (TextView) rowView.findViewById(R.id.rowItem);
-        listRow.setText(this.deck.get(position).getName());
+        Card thisCard = this.deck.get(position);
+        listRow.setText(thisCard.getName() + " (" + thisCard.getId() + ")");
         return rowView;
     }
 }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_hand"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.example.danyllo.pokedeck.HandActivity">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="345dp"
+        android:id="@+id/handList"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="82dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/giveRating"
+            android:layout_weight="1"
+            android:hint="Please give an integer from 0 to 10 as a rating"
+            android:textSize="14sp" />
+
+        <Button
+            android:text="OK"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:onClick="giveRating"
+            android:id="@+id/button7" />
+    </LinearLayout>
+</LinearLayout>

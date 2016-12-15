@@ -21,11 +21,9 @@ public class HttpParser {
         //return value
         String extract = "";
 
-        //get movie title
+        //get card name
         String input = params[0];
         if (input.length() < 2) {
-            /*Toast tooShort = Toast.makeText(this, "More than one character please", Toast.LENGTH_LONG);
-            tooShort.show();*/ //doesn't work
             return "";
         }
         String url = api + "?name=" + input;
