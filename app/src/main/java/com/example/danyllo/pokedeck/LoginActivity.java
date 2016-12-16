@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (getIntent().getStringExtra("Activity").equals("Card")) {
                                 Intent goToCard = new Intent(getApplicationContext(), CardActivity.class);
                                 goToCard.putExtra("offline", "OFFLINE");
+                                goToCard.putExtra("Activity", "Login");
                                 goToCard.putExtra("card", getIntent().getSerializableExtra("card"));
                                 startActivity(goToCard);
                                 finish();
