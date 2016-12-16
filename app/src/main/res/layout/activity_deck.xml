@@ -34,14 +34,14 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/deckRating"
-        android:layout_weight="1" />
+        android:layout_height="30dp"
+        android:id="@+id/deckRating" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="278dp"
-        android:id="@+id/deckList"/>
+        android:id="@+id/deckList"
+        android:layout_weight="0.01" />
 
     <Button
         android:text="Generate random hand"
@@ -57,4 +57,11 @@
         android:layout_height="wrap_content"
         android:onClick="clearDeck"
         android:id="@+id/button5" />
+
+    <Button
+        android:text="Go back to main page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="goToMainPage"
+        android:id="@+id/button8" />
 </LinearLayout>

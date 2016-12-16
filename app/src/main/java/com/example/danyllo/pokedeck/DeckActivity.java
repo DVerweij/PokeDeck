@@ -58,6 +58,14 @@ public class DeckActivity extends AppCompatActivity {
         setContentView(R.layout.activity_deck);
         checkLogin();
         setUpDatabase();
+        setDeckFromActivity();
+    }
+
+    private void setDeckFromActivity() {
+        if (getIntent().getStringExtra("Activity").equals("Hand")) {
+            deck = (Deck) getIntent().getSerializableExtra("rating");
+            deckRef.child(mAuth.getCurrentUser().getUid()).setValue(deck);
+        }
     }
 
     private void setRating() {
@@ -88,25 +96,6 @@ public class DeckActivity extends AppCompatActivity {
                 error.toException().printStackTrace();
             }
         });
-        deckRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    deck = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(Deck.class);
-                    if (getIntent().getStringExtra("Activity").equals("Hand")) {
-                        addRating(getIntent().getIntExtra("rating", 0));
-                    }
-                    showDeck();
-                } catch (NullPointerException n) {
-                    n.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                databaseError.toException().printStackTrace();
-            }
-        });
     }
 
     private void addRating(int rating) {
@@ -123,6 +112,7 @@ public class DeckActivity extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         usernameView = (TextView) findViewById(R.id.username);
         logButton = (Button) findViewById(R.id.signout);
+        //Set data on the logged-in user
         String viewString = "Logged in as: " + user.getEmail();
         usernameView.setText(viewString);
         logButton.setText("Sign Out");
@@ -139,15 +129,12 @@ public class DeckActivity extends AppCompatActivity {
 
     private void showDeck() {
         deckList = (ListView) findViewById(R.id.deckList);
-        //Log.d("ISFILLED", deck.getCardList().get(0).getName());
-        deckList.setAdapter(new DeckAdapter(this, deck.getCardList()));
+        deckList.setAdapter(new CardsAdapter(this, deck.getCardList()));
         deckList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 deck.deleteCard(deck.getCard(position));
-                //saveDeckToStorage();
-                //deckRef.setValue(deck);
-                deckList.setAdapter(new DeckAdapter(getApplicationContext(), deck.getCardList()));
+                deckList.setAdapter(new CardsAdapter(getApplicationContext(), deck.getCardList()));
                 return true;
             }
         });
@@ -155,7 +142,6 @@ public class DeckActivity extends AppCompatActivity {
 
 
     public void generateHand(View view) {
-        Log.d("SIZE", String.valueOf(deck.deckSize));
         if (deck.deckSize != 60) {
             Toast toast = Toast.makeText(this, "Deck size not 60 yet", Toast.LENGTH_SHORT);
             toast.show();
@@ -170,5 +156,12 @@ public class DeckActivity extends AppCompatActivity {
     public void clearDeck(View view) {
         deck = new Deck();
         deckRef.child(mAuth.getCurrentUser().getUid()).setValue(deck);
+    }
+
+    public void goToMainPage(View view) {
+        Intent mainPage = new Intent(this, MainActivity.class);
+        mainPage.putExtra("Activity", "Deck");
+        startActivity(mainPage);
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package com.example.danyllo.pokedeck;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -38,7 +39,7 @@ public class HandActivity extends AppCompatActivity {
     //Function which sets the generated hand in the listview and adds click listeners so it can
     //go to the CardActivity for the card clicked
     private void setHandInView() {
-        handListView.setAdapter(new DeckAdapter(this, hand));
+        handListView.setAdapter(new CardsAdapter(this, hand));
         handListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -105,12 +106,19 @@ public class HandActivity extends AppCompatActivity {
                 Toast wrongNum = Toast.makeText(this, "Between 0 and 10 please", Toast.LENGTH_SHORT);
                 wrongNum.show();
             } else {
+                addRating(num);
                 Intent backToDeck = new Intent(this, DeckActivity.class);
-                backToDeck.putExtra("rating", num);
+                backToDeck.putExtra("rating", deckList);
                 backToDeck.putExtra("Activity", "Hand");
                 startActivity(backToDeck);
                 finish();
             }
         }
+    }
+
+    private void addRating(int number) {
+        deckList.rating += number;
+        deckList.ratingCount++;
+        deckList.avgRating = (double) deckList.rating / (double) deckList.ratingCount;
     }
 }

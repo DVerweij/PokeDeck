@@ -1,11 +1,15 @@
 package com.example.danyllo.pokedeck;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private Button logButton;
     //The lists that will be filled by the searching of the cards
     //Tuple is a simple pair class (in this case of two Strings)
-    private ArrayList<Tuple> cardList = new ArrayList<Tuple>();
-    private Map<String, Card> cardMap = new HashMap<String, Card>();
+    private ArrayList<Card> cardList = new ArrayList<Card>();
+    //private Map<String, Card> cardMap = new HashMap<String, Card>();
 
     //Firebase variables
     private FirebaseAuth mAuth;
@@ -112,42 +116,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Initialization function which sets up the views and the adapter for the listview
+    //Initialization function which sets up the views and the adapter for the ListView
     private void initialize() {
         searchET = (EditText) findViewById(R.id.editText);
         searchList = (ListView) findViewById(R.id.cardList);
-        searchList.setAdapter(new CardAdapter(this, cardList));
+        searchList.setAdapter(new CardsAdapter(this, cardList));
         searchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Tuple cardNameAndID = cardList.get(position);
-                goToCardPage(cardNameAndID);
+                Card card = cardList.get(position);
+                goToCardPage(card);
             }
         });
     }
 
     //Function that on listView click goes to the Card found at the listView's child in question
-    private void goToCardPage(Tuple nameAndID) {
+    private void goToCardPage(Card card) {
         Intent cardActivity = new Intent(this, CardActivity.class);
         //This part will let the activity know from which activity it was triggered
         cardActivity.putExtra("Activity", "Main");
-        cardActivity.putExtra("card", cardMap.get(nameAndID.second)); //Gets Card object from ID
+        cardActivity.putExtra("card", card); //Gets Card object from ID
         startActivity(cardActivity);
     }
 
     //The search function
     public void searchCard(View view) {
-        String name = searchET.getText().toString().trim(); //Trim for better effect
+        //Trim for better effect
+        String name = searchET.getText().toString().trim();
+        //To hide the soft keyboard after click
+        searchET.onEditorAction(EditorInfo.IME_ACTION_DONE);
         //Get the list of cards from the input
         SearchSyncTask task = new SearchSyncTask(this, "https://api.pokemontcg.io/v1/cards");
         task.execute(name);
     }
 
     //Function called from SearchSyncTask which sets the data in the structures
-    public void setData(ArrayList<Tuple> names, Map<String, Card> mapWithCards) {
-        cardList = names;
-        cardMap = mapWithCards;
-        searchList.setAdapter(new CardAdapter(this, names));
+    public void setData(ArrayList<Card> cards) {
+        cardList = cards;
+        //cardMap = mapWithCards;
+        searchList.setAdapter(new CardsAdapter(this, cardList));
     }
 
 
@@ -155,11 +162,14 @@ public class MainActivity extends AppCompatActivity {
     public void goToDeckList(View view) {
         if (mAuth.getCurrentUser() != null) {
             Intent deckList = new Intent(this, DeckActivity.class);
+            deckList.putExtra("Activity", "Main");
             startActivity(deckList);
+            finish();
         //Design choice: No decklist if you're not logged in
         } else {
             Toast notAUser = Toast.makeText(this, "Have to be logged in", Toast.LENGTH_SHORT);
             notAUser.show();
         }
     }
+
 }

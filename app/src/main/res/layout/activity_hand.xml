@@ -29,7 +29,7 @@
             android:id="@+id/giveRating"
             android:layout_weight="1"
             android:hint="Please give an integer from 0 to 10 as a rating"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <Button
             android:text="OK"

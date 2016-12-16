@@ -28,7 +28,7 @@ public class CardSyncTask extends AsyncTask<Card, Integer, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Card... params) {
-        String imageURL = params[0].getImageURL();
+        String imageURL = params[0].getImageLink();
         Bitmap picture = null;
         try {
             InputStream input = new java.net.URL(imageURL).openStream();
@@ -40,8 +40,8 @@ public class CardSyncTask extends AsyncTask<Card, Integer, Bitmap> {
     }
 
     protected void onPreExecute(){
-        Toast preexe = Toast.makeText(context, "Acquiring data", Toast.LENGTH_LONG);
-        preexe.show();
+        Toast preExe = Toast.makeText(context, "Acquiring data", Toast.LENGTH_LONG);
+        preExe.show();
     }
 
     protected void onPostExecute(Bitmap picture){

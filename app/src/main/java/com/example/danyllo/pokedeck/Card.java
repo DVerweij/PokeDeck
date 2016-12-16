@@ -23,20 +23,19 @@ public class Card implements Serializable{
     //Globals of card characteristics
     private String id;
     private String name;
+    private String setName;
     private int pokedexEntry;
-    private String ImageLink;
+    private String imageLink;
     private String subType;
     private String superType;
-    private int HP;
+    private int hitPoints;
     private Tuple retreatCost;
     private ArrayList<String> types = new ArrayList<String>();
     private Tuple weakness;
     private Tuple resistance;
 
     //constructor for firebase
-    public Card() {
-        Log.d("PLACEHOLDER", "PLACEHOLDER");
-    }
+    public Card() {}
 
     //actual constructor
     public Card(JSONObject jsonObject) {
@@ -52,12 +51,16 @@ public class Card implements Serializable{
         return this.id;
     }
 
-    public String getImageURL() {
-        return this.ImageLink;
+    public String getImageLink() {
+        return this.imageLink;
     }
 
     public String getName() {
         return this.name;
+    }
+
+    public String getSetName() {
+        return this.setName;
     }
 
     public int getPokedexEntry() {
@@ -72,8 +75,8 @@ public class Card implements Serializable{
         return this.superType;
     }
 
-    public int getHP() {
-        return this.HP;
+    public int getHitPoints() {
+        return this.hitPoints;
     }
 
     public Tuple getRetreatCost() {
@@ -92,13 +95,18 @@ public class Card implements Serializable{
         return this.types;
     }
 
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
     private void setVariables(JSONObject jsonObject) throws JSONException{
         //All cards will have the following five variables (there are more like artist and set name)
         this.id = jsonObject.getString("id");
         this.name = jsonObject.getString("name");
-        this.ImageLink = jsonObject.getString("imageUrl");
+        this.imageLink = jsonObject.getString("imageUrl");
         this.subType = jsonObject.getString("subtype");
         this.superType = jsonObject.getString("supertype");
+        this.setName = jsonObject.getString("set");
         //Trainer and energy cards lack some features exclusive to the actual Pokémon
         //Thus the parsePokemon function called iff the supertype is Pokémon
         if (jsonObject.getString("supertype").equals("Pokémon")) {
@@ -106,11 +114,15 @@ public class Card implements Serializable{
         }
     }
 
-    //This function adds all card information to an arraylist of Strings
+    //This function adds all card information to an arraylist of Strings to be used in the
+    // CardActivity ListView
     public ArrayList<String> getDetails() {
         ArrayList<String> details = new ArrayList<String>();
         //list additions
         details.add("id: " + this.id);
+        //set name
+        details.add("Set Name: " + this.setName);
+        //subTypes may be non-existent (for regular Trainer cards for example)
         if (!this.subType.equals("")) {
             details.add("Subtype: " + this.subType);
         } else {
@@ -120,7 +132,7 @@ public class Card implements Serializable{
         //the pokemon traits are added in this separate if-statement
         if (this.superType.equals("Pokémon")) {
             details.add("PokeDexNumber: " + String.valueOf(this.pokedexEntry));
-            details.add("HP: " + String.valueOf(this.HP));
+            details.add("HP: " + String.valueOf(this.hitPoints));
 
             String typeString = "Types: ";
             for (int i = 0; i<this.types.size(); i++) {
@@ -149,7 +161,7 @@ public class Card implements Serializable{
     private void parsePokemon(JSONObject jsonObject) throws JSONException{
         //The following traits are traits that all Pokémon have
         this.pokedexEntry = Integer.parseInt(jsonObject.getString("nationalPokedexNumber"));
-        this.HP = Integer.parseInt(jsonObject.getString("hp"));
+        this.hitPoints = Integer.parseInt(jsonObject.getString("hp"));
 
         //Some have multiple (two) types which are added to an ArrayList of Strings
         //Not entirely sure if all pokemon cards are just dual-typed, otherwise Tuple could be used

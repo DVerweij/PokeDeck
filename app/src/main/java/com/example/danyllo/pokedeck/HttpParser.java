@@ -29,7 +29,6 @@ public class HttpParser {
             return "";
         }
         String url = api + "?name=" + input;
-        Log.d("URL", url);
 
         //get url and establish connection
         URL extractURL = new URL(url);
@@ -50,7 +49,6 @@ public class HttpParser {
                     new InputStreamReader(connection.getErrorStream()));
 
         }
-        Log.d("RESULT",extract);
         return extract;
     }
 }

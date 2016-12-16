@@ -10,30 +10,32 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Danyllo on 10-12-2016.
+ * Created by Danyllo on 12-12-2016.
  */
 
-/*Adapter used for the ListView in the MainActivity after a search in the API has been performed*/
+/*This the Adapter that maps the cards to the ListViews in Main-, Deck- and HandActivity
+ It fills TextViews with the Card's name and ID (picture may be added after layout changes)*/
 
-public class CardAdapter extends ArrayAdapter<Tuple> {
+public class CardsAdapter extends ArrayAdapter<Card> {
     private final Context context;
-    private ArrayList<Tuple> nameAndID;
+    private ArrayList<Card> deck;
 
-    public CardAdapter(Context context, ArrayList<Tuple> nameAndIDList) {
-        super(context, R.layout.activity_main, nameAndIDList);
+
+    public CardsAdapter(Context context, ArrayList<Card> deckList) {
+        super(context, R.layout.activity_main, deckList);
         this.context = context;
-        this.nameAndID = nameAndIDList;
+        this.deck = deckList;
     }
 
+    //function which sets the card name and id in the listView
     @Override
-    //This function sets a tuple in the listView
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View rowView = inflater.inflate(R.layout.activity_list, parent, false);
         View rowView = inflater.inflate(R.layout.listview_row_item, parent, false);
         TextView listRow = (TextView) rowView.findViewById(R.id.rowItem);
-        listRow.setText(this.nameAndID.get(position).toString());
+        Card thisCard = this.deck.get(position);
+        listRow.setText(thisCard.getName() + " (" + thisCard.getId() + ")");
         return rowView;
     }
 }

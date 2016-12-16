@@ -32,7 +32,6 @@ public class SearchSyncTask extends AsyncTask<String, Integer, String> {
         this.activity = activity;
         this.context = this.activity.getApplicationContext();
         apiURL = api;
-        Log.d("CONS", apiURL);
     }
 
     //Extract from API using HttpParser class
@@ -56,13 +55,13 @@ public class SearchSyncTask extends AsyncTask<String, Integer, String> {
     //Function which collects data and saves it in the activity
     protected void onPostExecute(String result){
         super.onPostExecute(result);
-        Log.d("RESULT", result);
         if(result.length() == 0) {
             Toast noData = Toast.makeText(context, "No data was found", Toast.LENGTH_LONG);
             noData.show();
         } else {
-            ArrayList<Tuple> names = new ArrayList<Tuple>();
-            Map<String, Card> cardMap = new HashMap<String, Card>();
+            //ArrayList<Tuple> names = new ArrayList<Tuple>();
+            //Map<String, Card> cardMap = new HashMap<String, Card>();
+            ArrayList<Card> cardList = new ArrayList<Card>();
             //this puts name and id in a separate tuple object so they can be put in the listview
             //the full jsonobject is given to the Card constructor so the card objects can be mapped
             //to their ids
@@ -71,17 +70,15 @@ public class SearchSyncTask extends AsyncTask<String, Integer, String> {
                 JSONArray listOfCards = json.getJSONArray("cards");
                 for(int i=0; i < listOfCards.length(); i++) {
                     JSONObject jsonObj = listOfCards.getJSONObject(i);
-                    Log.d("SIZE", String.valueOf(jsonObj.length()));
-                    names.add(new Tuple(jsonObj.getString("name"), jsonObj.getString("id")));
-                    cardMap.put(jsonObj.getString("id"), new Card(jsonObj));
-                    Log.d("MAP", jsonObj.toString());
+                    //names.add(new Tuple(jsonObj.getString("name"), jsonObj.getString("id")));
+                    //cardMap.put(jsonObj.getString("id"), new Card(jsonObj));
+                    cardList.add(new Card(jsonObj));
                 }
-                Log.d("LOL", listOfCards.getJSONObject(0).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             //call setData function in the mainactivity
-            this.activity.setData(names, cardMap);
+            this.activity.setData(cardList);
         }
     }
 }
