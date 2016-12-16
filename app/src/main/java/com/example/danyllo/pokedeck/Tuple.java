@@ -15,9 +15,7 @@ public class Tuple implements Serializable{
     public String second;
 
     //constructor for use with firebase
-    public Tuple() {
-        Log.d("CONSTRUCTED", "CONSTRUCTED");
-    }
+    public Tuple() {}
 
     public Tuple (String one, String two) {
         this.first = one;

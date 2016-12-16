@@ -138,6 +138,16 @@ public class DeckActivity extends AppCompatActivity {
                 return true;
             }
         });
+        deckList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Card card = deck.getCard(position);
+                Intent goToCard = new Intent(getApplicationContext(), CardActivity.class);
+                goToCard.putExtra("card", card);
+                goToCard.putExtra("Activity", "Deck");
+                startActivity(goToCard);
+            }
+        });
     }
 
 

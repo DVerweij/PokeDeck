@@ -197,6 +197,7 @@ public class CardActivity extends AppCompatActivity {
         //Only logged in users get to access this list
         if (mAuth.getCurrentUser() != null) {
             Intent deckList = new Intent(this, DeckActivity.class);
+            deckList.putExtra("Activity", "Card");
             startActivity(deckList);
         } else {
             Toast notAUser = Toast.makeText(this, "Have to be logged in", Toast.LENGTH_SHORT);

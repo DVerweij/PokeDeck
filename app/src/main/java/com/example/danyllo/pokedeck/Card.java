@@ -48,51 +48,51 @@ public class Card implements Serializable{
 
     //Public getters functions to work with setValue function of Firebase
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public String getImageLink() {
-        return this.imageLink;
+        return imageLink;
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String getSetName() {
-        return this.setName;
+        return setName;
     }
 
     public int getPokedexEntry() {
-        return this.pokedexEntry;
+        return pokedexEntry;
     }
 
     public String getSubType() {
-        return this.subType;
+        return subType;
     }
 
     public String getSuperType() {
-        return this.superType;
+        return superType;
     }
 
     public int getHitPoints() {
-        return this.hitPoints;
+        return hitPoints;
     }
 
     public Tuple getRetreatCost() {
-        return this.retreatCost;
+        return retreatCost;
     }
 
     public Tuple getWeakness() {
-        return this.weakness;
+        return weakness;
     }
 
     public Tuple getResistance() {
-        return this.resistance;
+        return resistance;
     }
 
     public ArrayList<String> getTypes() {
-        return this.types;
+        return types;
     }
 
     public void setImageLink(String imageLink) {
@@ -107,6 +107,7 @@ public class Card implements Serializable{
         this.subType = jsonObject.getString("subtype");
         this.superType = jsonObject.getString("supertype");
         this.setName = jsonObject.getString("set");
+        Log.d("GET", this.imageLink + " " + this.setName);
         //Trainer and energy cards lack some features exclusive to the actual Pokémon
         //Thus the parsePokemon function called iff the supertype is Pokémon
         if (jsonObject.getString("supertype").equals("Pokémon")) {
