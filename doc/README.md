@@ -8,6 +8,10 @@
 
 Welcome to the GitHub page of my app, PokeDeck. This app allows users to look for their favourite Pokémon cards in a huge database provided by pokemontcg.io. These cards can then be looked at and added to your personal virtual deck given that you sign up for this great app. Users are allowed to make entire 60-card pokémon decks without having to own a single card and the app gives users the option to generate random hands and users can then evaluate these hands, giving the decks an overall score if this process is repeated. To keep track of users, Firebase is used to handle the authentication.
 
+###Firebase
+
+Firebase is a resource that allows app creators to set up authentication and realtime databases for their apps. In this app, both the Authentication and the Realtime Database are used. The database saves the Deck object based on the User ID of the user logged in. CardActivity and DeckActivity read and write the deck from this database.
+
 
 ###Card
 
@@ -19,7 +23,7 @@ A Deck object is used to contain the Card objects and serve as the user's virtua
 
 ##MainActivity
 
-![]()
+![](https://github.com/DVerweij/PokeDeck/blob/master/app/src/main/res/drawable/device-2016-12-16-234014.png)
 
 The MainActivity handles the search functionality of the app. 
 
@@ -33,7 +37,7 @@ Some key factors of this Activity:
 
 ##CardActivity
 
-![]()
+![](https://github.com/DVerweij/PokeDeck/blob/master/app/src/main/res/drawable/device-2016-12-16-234228.png)
 
 The CardActivity shows the Card's picture and information (found in the Card object).
 
@@ -43,7 +47,7 @@ The CardActivity shows the Card's picture and information (found in the Card obj
 
 ##DeckActivity
 
-![]()
+![](https://github.com/DVerweij/PokeDeck/blob/master/app/src/main/res/drawable/device-2016-12-16-234325.png)
 
 The DeckActivity shows a list of the cards you have in the deck and allows you to generate hands and rate said hands.
 
@@ -55,7 +59,7 @@ The DeckActivity shows a list of the cards you have in the deck and allows you t
 
 ##HandActivity
 
-![]()
+![](https://github.com/DVerweij/PokeDeck/blob/master/app/src/main/res/drawable/device-2016-12-16-234415.png)
 
 The HandActivity takes the deck attained from DeckActivity and generates a random 7 card hand.
 
@@ -65,12 +69,20 @@ The HandActivity takes the deck attained from DeckActivity and generates a rando
 
 ##LoginActivity
 
-![]()
+![](https://github.com/DVerweij/PokeDeck/blob/master/app/src/main/res/drawable/device-2016-12-16-234540.png)
 
 The LoginActivity handles both the signing up and signing in of users.
 
 -The authentication is kept quite simple with the signing up ad signing in in the same activity.
 -No verification or password recovery implemented yet.
 -Offline button allows users to not log in at the cost of some user-only functionalities.
+
+##CardsAdapter
+
+This Adapter extending the standard ArrayAdapter maps the Cards to a ListView item. This item will display the name and ID of the cards but also the typing of the cards if applicable (Basic Energy or Pokémon).
+
+-This Adapter extends ArrayAdapter\<Card\>
+-Each row of the ListView contains two ImageViews (one for each type) and a TextView
+-The icons for typing are added on a switch statement basis.
 
 
