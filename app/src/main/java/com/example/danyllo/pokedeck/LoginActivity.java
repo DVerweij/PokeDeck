@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/*The activity where a user can sign up, sign in or choose to continue using the app not logged in*/
+
 public class LoginActivity extends AppCompatActivity {
     //The views in the activity
     private EditText email;
@@ -66,11 +68,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    //The signup function, will fail if you put in a already existing e-mailaddress
     public void signUp(View view) {
         String attemptEmail = email.getText().toString().trim();
         if (attemptEmail.length() == 0) {
             Toast noEmail = Toast.makeText(this, "No email input", Toast.LENGTH_SHORT);
             noEmail.show();
+        } else if (!attemptEmail.contains("@")) {
+            Toast notAnEmail = Toast.makeText(this, "Not an e-mail address", Toast.LENGTH_SHORT);
+            notAnEmail.show();
         }
         String attemptPass = password.getText().toString();
         if (attemptPass.length() < 3) {
@@ -100,9 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                                     goToCard.putExtra("card", getIntent().getSerializableExtra("card"));
                                     startActivity(goToCard);
                                     finish();
-                                } else if (getIntent().getStringExtra("Activity").equals("Deck")) {
-                                    startActivity(new Intent(getApplicationContext(), DeckActivity.class));
-                                    finish();
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                     finish();
@@ -113,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //The signin function, will fail if e-mail address doesn't exist in the system
     public void signIn(View view) {
         String loginEmail = email.getText().toString().trim();
         if (loginEmail.length() == 0) {
@@ -144,9 +148,6 @@ public class LoginActivity extends AppCompatActivity {
                                 goToCard.putExtra("card", getIntent().getSerializableExtra("card"));
                                 startActivity(goToCard);
                                 finish();
-                            } else if (getIntent().getStringExtra("Activity").equals("Deck")) {
-                                startActivity(new Intent(getApplicationContext(), DeckActivity.class));
-                                finish();
                             } else {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
@@ -156,17 +157,14 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    //offlineMode is a function which allows a user to forgo loggin in and make use of the app
+    // without having logged in
     public void offlineMode(View view) {
         if (getIntent().getStringExtra("Activity").equals("Card")) {
             Intent goToCard = new Intent(this, CardActivity.class);
             goToCard.putExtra("offline", "OFFLINE");
             goToCard.putExtra("card", getIntent().getSerializableExtra("card"));
             startActivity(goToCard);
-            finish();
-        } else if (getIntent().getStringExtra("Activity").equals("Deck")) {
-            Intent goToDeck = new Intent(this, DeckActivity.class);
-            goToDeck.putExtra("offline", "OFFLINE");
-            startActivity(new Intent(getApplicationContext(), DeckActivity.class));
             finish();
         } else {
             Intent goToMain = new Intent(this, MainActivity.class);

@@ -16,8 +16,11 @@ import java.util.ArrayList;
  * Created by Danyllo on 8-12-2016.
  */
 
+/*This is an object specifically made for the card itself with variables
+denoting the card information*/
+
 public class Card implements Serializable{
-    //Globals of pokemon characteristics
+    //Globals of card characteristics
     private String id;
     private String name;
     private int pokedexEntry;
@@ -35,6 +38,7 @@ public class Card implements Serializable{
         Log.d("PLACEHOLDER", "PLACEHOLDER");
     }
 
+    //actual constructor
     public Card(JSONObject jsonObject) {
         try {
             setVariables(jsonObject);
@@ -89,14 +93,14 @@ public class Card implements Serializable{
     }
 
     private void setVariables(JSONObject jsonObject) throws JSONException{
+        //All cards will have the following five variables (there are more like artist and set name)
         this.id = jsonObject.getString("id");
         this.name = jsonObject.getString("name");
         this.ImageLink = jsonObject.getString("imageUrl");
         this.subType = jsonObject.getString("subtype");
         this.superType = jsonObject.getString("supertype");
-        Log.d("NAME", this.name);
         //Trainer and energy cards lack some features exclusive to the actual Pokémon
-        //Thus the parsePokemon function called iff the supertype is pokémon
+        //Thus the parsePokemon function called iff the supertype is Pokémon
         if (jsonObject.getString("supertype").equals("Pokémon")) {
             parsePokemon(jsonObject);
         }
@@ -113,6 +117,7 @@ public class Card implements Serializable{
             details.add("Subtype: N/A");
         }
         details.add("Supertype: " + this.superType);
+        //the pokemon traits are added in this separate if-statement
         if (this.superType.equals("Pokémon")) {
             details.add("PokeDexNumber: " + String.valueOf(this.pokedexEntry));
             details.add("HP: " + String.valueOf(this.HP));
@@ -142,23 +147,26 @@ public class Card implements Serializable{
 
     //parsePokemon is a function that only saves the information exclusive to the actual Pokémon
     private void parsePokemon(JSONObject jsonObject) throws JSONException{
+        //The following traits are traits that all Pokémon have
         this.pokedexEntry = Integer.parseInt(jsonObject.getString("nationalPokedexNumber"));
-        this.subType = jsonObject.getString("subtype");
-        Log.d("SUBTYPE", this.subType);
-        this.superType = jsonObject.getString("supertype");
         this.HP = Integer.parseInt(jsonObject.getString("hp"));
 
+        //Some have multiple (two) types which are added to an ArrayList of Strings
+        //Not entirely sure if all pokemon cards are just dual-typed, otherwise Tuple could be used
+        //instead of the list
         JSONArray typesArray = jsonObject.getJSONArray("types");
         for (int i = 0; i < typesArray.length(); i++) {
             this.types.add(typesArray.getString(i));
         }
 
+        //not every pokemon has a retreatcost so this needs to be checked
         if (jsonObject.has("retreatCost")) {
             JSONArray retreatCostArray = jsonObject.getJSONArray("retreatCost");
             Log.d("COST", retreatCostArray.getString(0));
             this.retreatCost = new Tuple(String.valueOf(retreatCostArray.length()), retreatCostArray.getString(0));
         }
 
+        //the same applies for weakness
         if (jsonObject.has("weaknesses")) {
             JSONArray weaknessArray = jsonObject.getJSONArray("weaknesses");
             JSONObject weaknessJSON = weaknessArray.getJSONObject(0);
@@ -167,6 +175,7 @@ public class Card implements Serializable{
             this.weakness = new Tuple(weaknessType, weaknessValue);
         }
 
+        //Very little pokemon, from what I've seen, have resistances, probably to maintain balance
         if (jsonObject.has("resistances")) {
             JSONArray resistanceArray = jsonObject.getJSONArray("resistances");
             JSONObject resistanceJSON = resistanceArray.getJSONObject(0);
@@ -182,6 +191,9 @@ public class Card implements Serializable{
         return this.superType.equals("Energy") && this.subType.equals("Basic");
     }
 
+
+    //A deck needs at least one basic pokemon, this boolean is used to prevent decks with no
+    //basic pokemon
     public boolean isBasicPokemon() {
         return this.superType.equals("Pokémon") && this.subType.equals("Basic");
     }

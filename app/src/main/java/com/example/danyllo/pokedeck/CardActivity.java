@@ -36,14 +36,21 @@ import java.io.ObjectOutputStream;
 
 import static android.R.layout.simple_list_item_1;
 
+/*This is the activity that displays the card information, including it's picture*/
+
 public class CardActivity extends AppCompatActivity {
+    //private card and deck objects
     private Deck deck;
     private Card card;
-    private TextView usernameView;
+
+    //global view variables;
     private Button logButton;
-    private ListView details;
-    private ArrayAdapter<String> detailAdapter;
-    private TextView nameView;
+    Button addButton;
+    Button deckButton;
+    ListView details;
+    ArrayAdapter<String> detailAdapter;
+    TextView usernameView;
+    TextView nameView;
     private ImageView cardImage;
 
     //Firebase variables
@@ -60,16 +67,28 @@ public class CardActivity extends AppCompatActivity {
             card = (Card) getIntent().getSerializableExtra("card");
             setUpCardProfile();
         } else {
-            Log.d("GOT HERE", savedInstanceState.toString());
+            //It will reload the page when rotating, but no loss of variables
             card = (Card) savedInstanceState.getSerializable("card");
-            Log.d("CARD", card.toString());
             setUpCardProfile();
         }
         setUpDatabase();
         checkLogin();
-
+        //If coming from the random generated Hand activity, turn off signIn, add and deckButton
+        if (getIntent().getStringExtra("Activity").equals("Hand")) {
+            turnOffButtons();
+        }
     }
 
+    //function that turns off certain buttons
+    private void turnOffButtons() {
+        addButton = (Button) findViewById(R.id.button4);
+        deckButton = (Button) findViewById(R.id.button6);
+        logButton.setVisibility(View.INVISIBLE);
+        addButton.setVisibility(View.INVISIBLE);
+        deckButton.setVisibility(View.INVISIBLE);
+    }
+
+    //function which setsup the database to retrieve the deck object from
     private void setUpDatabase() {
         deckDatabase = FirebaseDatabase.getInstance();
         deckRef = deckDatabase.getReference("deck");
@@ -80,7 +99,6 @@ public class CardActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 try {
-                    Log.d("BOI", "BOI");
                     deck = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(Deck.class);
                 } catch (NullPointerException n) {
                     n.printStackTrace();
@@ -96,6 +114,7 @@ public class CardActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
+        //save card object so at rotation, it doesn't disappear
         savedInstanceState.putSerializable("card", card);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -121,6 +140,7 @@ public class CardActivity extends AppCompatActivity {
                 }
             }
         };
+        //Like in the main activity, checks if user is logged in and changes views accordingly
         if (user != null) {
             String viewString = "Logged in as: " + user.getEmail();
             usernameView.setText(viewString);
@@ -136,7 +156,7 @@ public class CardActivity extends AppCompatActivity {
                 if (logButton.getText().toString().equals("Sign In")) {
                     Intent goToLogin = new Intent(CardActivity.this, LoginActivity.class);
                     goToLogin.putExtra("Activity", "Card");
-                    //To hold the card and send it back later
+                    //To hold the card and send it back later, only way to prevent crashing
                     goToLogin.putExtra("card", card);
                     startActivity(goToLogin);
                     finish();
@@ -147,7 +167,7 @@ public class CardActivity extends AppCompatActivity {
         });
     }
 
-
+    //function which sets up the card information for use in the views
     private void setUpCardProfile() {
         cardImage = (ImageView) findViewById(R.id.imageView);
         CardSyncTask task = new CardSyncTask(this);
@@ -155,6 +175,8 @@ public class CardActivity extends AppCompatActivity {
         setUpDetails();
     }
 
+
+    //This function sets the listView and textView after having attainted the card information
     private void setUpDetails() {
         details = (ListView) findViewById(R.id.detailList);
         nameView = (TextView) findViewById(R.id.name);
@@ -164,12 +186,15 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
+    //function called from the Asynctasks to put picture in the imageView on the left
     public void setBitmap(Bitmap picture) {
         Log.d("BITMAP", "HERE");
         cardImage.setImageBitmap(picture);
     }
 
+    //onclick function which goes from this activity to the deckActivity
     public void goToDeckList(View view) {
+        //Only logged in users get to access this list
         if (mAuth.getCurrentUser() != null) {
             Intent deckList = new Intent(this, DeckActivity.class);
             startActivity(deckList);
@@ -179,28 +204,37 @@ public class CardActivity extends AppCompatActivity {
         }
     }
 
+    //onclick function which adds the card in the activity to the user's deck
     public void addToDeckList(View view) {
+        //if there is already a deck (read from the database), add the card to it
         if (deck != null) {
+            //addCard returns a boolean to make sure this activity knows if the add was successful
             boolean wasAdded = deck.addCard(card);
-            Log.d("ADDED", Boolean.toString(wasAdded));
+            //if the card wasn't added, the toasts tell the user why
             if (!wasAdded) {
+                //The deck size may be 60 which means no card can be added
                 if (deck.deckSize == 60) {
                     Toast deckFull = Toast.makeText(this, "Deck is full", Toast.LENGTH_SHORT);
                     deckFull.show();
+                //Either there needs to be a basic pokemon added or there's too many of this card
+                //in the deck
                 } else {
-                    Toast tooManyOfCard = Toast.makeText(this, "Cannot add any more of this card", Toast.LENGTH_SHORT);
+                    Toast tooManyOfCard = Toast.makeText(this,
+                            "Cannot add any more of this card", Toast.LENGTH_SHORT);
                     tooManyOfCard.show();
                 }
             } else {
-                Log.d("GOT HERE", "GOT HERE");
+                //if it was added, update the database with the changed deck
                 putInDatabase();
             }
         } else {
+            //if there was no deck yet, make a new deck and put it in the database
             deck = new Deck(card);
             putInDatabase();
         }
     }
 
+    //This function puts the deck in the database iff the user is logged in
     private void putInDatabase() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/*The activity which is opened when the user wants to generate a random hand*/
+
 public class HandActivity extends AppCompatActivity {
     //Views
     private ListView handListView;
@@ -33,6 +35,8 @@ public class HandActivity extends AppCompatActivity {
         setHandInView();
     }
 
+    //Function which sets the generated hand in the listview and adds click listeners so it can
+    //go to the CardActivity for the card clicked
     private void setHandInView() {
         handListView.setAdapter(new DeckAdapter(this, hand));
         handListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -41,30 +45,37 @@ public class HandActivity extends AppCompatActivity {
                 Card card = hand.get(position);
                 Intent goToCard = new Intent(getApplicationContext(), CardActivity.class);
                 goToCard.putExtra("card", card);
+                goToCard.putExtra("Activity", "Hand");
                 startActivity(goToCard);
             }
         });
     }
 
+    //Function which generates the random hand
     private void generateRandomHand() {
         //duplication of list so it won't overwrite the actual deckList
         ArrayList<Card> duplicateList = new ArrayList<Card>(deckList.getCardList());
         //list where the seven card hand will be put
         ArrayList<Card> generatedHand = new ArrayList<Card>();
         Random rand = new Random();
+        //This for-loop takes 7 random cards from the duplicated decklist
+        // and puts in the generatedHand
         for (int i = 0; i < 7; i++) {
             int randNum = rand.nextInt(duplicateList.size());
             Card randomCard = duplicateList.get(randNum);
             duplicateList.remove(randomCard);
             generatedHand.add(randomCard);
         }
+        //Rule: the first hand needs to have a basic pokemon or a mulligan occurs
         if (containsBasicPokemon(generatedHand)) {
             hand = generatedHand;
+        //So if there's no basic pokemon, the hand is recursively regenerated
         } else {
             generateRandomHand();
         }
     }
 
+    //function which checks if the hand contains a basic pokemon
     private boolean containsBasicPokemon(ArrayList<Card> generatedHand) {
         for (int i = 0; i < generatedHand.size(); i++) {
             if (generatedHand.get(i).isBasicPokemon()) {
@@ -74,17 +85,22 @@ public class HandActivity extends AppCompatActivity {
         return false;
     }
 
+    //onClick function which allows the user to put in a random integer between 0 and 10
+    // and give that as a score to the hand which is later added to the deck
     public void giveRating(View view) {
         String input = ratingET.getText().toString().trim();
         Scanner numberScan = new Scanner(input);
+        //No empty inputs
         if (input.length() == 0) {
             Toast noInput = Toast.makeText(this, "No input", Toast.LENGTH_SHORT);
             noInput.show();
+        //has to be an int
         } else if (!numberScan.hasNextInt()) {
             Toast noInt = Toast.makeText(this, "Please put in an integer", Toast.LENGTH_SHORT);
             noInt.show();
         } else {
             int num = numberScan.nextInt();
+            //The int cannot be below 0 or above 10
             if (num < 0 || num > 10) {
                 Toast wrongNum = Toast.makeText(this, "Between 0 and 10 please", Toast.LENGTH_SHORT);
                 wrongNum.show();

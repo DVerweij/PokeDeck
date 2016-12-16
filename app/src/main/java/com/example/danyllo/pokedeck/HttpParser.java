@@ -11,6 +11,8 @@ import java.net.URL;
  * Created by Danyllo on 7-12-2016.
  */
 
+
+/*Class which parses the http given to it from the aSyncTask*/
 public class HttpParser {
     private static String api;
     //private static final String extra = "&r=json";

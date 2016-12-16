@@ -18,13 +18,17 @@ import java.util.Map;
  * Created by Danyllo on 7-12-2016.
  */
 
-public class AppSyncTask extends AsyncTask<String, Integer, String> {
+/*The AsyncTask connected to the MainActivity. This task handles the search of cards in the Pokemon
+TCG API
+ */
+
+public class SearchSyncTask extends AsyncTask<String, Integer, String> {
     private Context context;
     private MainActivity activity;
     private String apiURL;
 
     // Constructor
-    public AppSyncTask(MainActivity activity, String api) {
+    public SearchSyncTask(MainActivity activity, String api) {
         this.activity = activity;
         this.context = this.activity.getApplicationContext();
         apiURL = api;
@@ -58,8 +62,10 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
             noData.show();
         } else {
             ArrayList<Tuple> names = new ArrayList<Tuple>();
-
             Map<String, Card> cardMap = new HashMap<String, Card>();
+            //this puts name and id in a separate tuple object so they can be put in the listview
+            //the full jsonobject is given to the Card constructor so the card objects can be mapped
+            //to their ids
             try {
                 JSONObject json = new JSONObject(result);
                 JSONArray listOfCards = json.getJSONArray("cards");
@@ -74,6 +80,7 @@ public class AppSyncTask extends AsyncTask<String, Integer, String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            //call setData function in the mainactivity
             this.activity.setData(names, cardMap);
         }
     }

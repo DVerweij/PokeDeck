@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,22 +15,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.layout.simple_list_item_1;
-
-/* The activity that the app starts with. It handels the searching of the pokemon cards based on name*/
+/* The activity that the app starts with. It handels the searching of the pokemon cards based on name
+ Credit to: https://api.pokemontcg.io*/
 public class MainActivity extends AppCompatActivity {
     //The views as global variables
     private EditText searchET;
@@ -55,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         initialize();
     }
 
+    //onStart and onStop will enable and disable the authstatelisteners
     @Override
     public void onStart() {
         super.onStart();
@@ -69,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    //function which checks the login status of the user
     private void checkLogin() {
         //Courtesy of: http://www.androidhive.info/2016/06/android-getting-started-firebase-simple-login-registration-auth/
         mAuth = FirebaseAuth.getInstance();
@@ -81,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    //when not triggered by the continue offline button
+                    //when not triggered by the continue offline button, the login screen will be
+                    //seen from the user's perspective
                     if (getIntent().getStringExtra("offline") == null) {
                         // launch login activity
                         Intent goToLogin = new Intent(MainActivity.this, LoginActivity.class);
@@ -92,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+        //the activity will display the login status to the user
         if (user != null) {
             String viewString = "Logged in as: " + user.getEmail();
             usernameView.setText(viewString);
@@ -104,11 +97,13 @@ public class MainActivity extends AppCompatActivity {
         logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //if not logged in, clicking the button will bring the user to the sign-in screen
                 if (logButton.getText().toString().equals("Sign In")) {
                     Intent goToLogin = new Intent(MainActivity.this, LoginActivity.class);
                     goToLogin.putExtra("Activity", "Main");
                     startActivity(goToLogin);
                     finish();
+                //otherwise: it will sign the user out
                 } else {
                     mAuth.signOut();
                 }
@@ -134,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     //Function that on listView click goes to the Card found at the listView's child in question
     private void goToCardPage(Tuple nameAndID) {
         Intent cardActivity = new Intent(this, CardActivity.class);
+        //This part will let the activity know from which activity it was triggered
+        cardActivity.putExtra("Activity", "Main");
         cardActivity.putExtra("card", cardMap.get(nameAndID.second)); //Gets Card object from ID
         startActivity(cardActivity);
     }
@@ -141,24 +138,25 @@ public class MainActivity extends AppCompatActivity {
     //The search function
     public void searchCard(View view) {
         String name = searchET.getText().toString().trim(); //Trim for better effect
-        AppSyncTask task = new AppSyncTask(this, "https://api.pokemontcg.io/v1/cards");
+        //Get the list of cards from the input
+        SearchSyncTask task = new SearchSyncTask(this, "https://api.pokemontcg.io/v1/cards");
         task.execute(name);
-        Log.d("W0t", name);
     }
 
-    //Function called from AppSyncTask which sets the data in the structures
+    //Function called from SearchSyncTask which sets the data in the structures
     public void setData(ArrayList<Tuple> names, Map<String, Card> mapWithCards) {
         cardList = names;
         cardMap = mapWithCards;
         searchList.setAdapter(new CardAdapter(this, names));
-        Log.d("GOT", "HERE");
     }
 
 
+    //onclick function which goes from main to the decklist
     public void goToDeckList(View view) {
         if (mAuth.getCurrentUser() != null) {
             Intent deckList = new Intent(this, DeckActivity.class);
             startActivity(deckList);
+        //Design choice: No decklist if you're not logged in
         } else {
             Toast notAUser = Toast.makeText(this, "Have to be logged in", Toast.LENGTH_SHORT);
             notAUser.show();
