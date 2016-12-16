@@ -1,15 +1,11 @@
 package com.example.danyllo.pokedeck;
 
-import android.util.Log;
-import android.util.Pair;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -107,7 +103,6 @@ public class Card implements Serializable{
         this.subType = jsonObject.getString("subtype");
         this.superType = jsonObject.getString("supertype");
         this.setName = jsonObject.getString("set");
-        Log.d("GET", this.imageLink + " " + this.setName);
         //Trainer and energy cards lack some features exclusive to the actual Pokémon
         //Thus the parsePokemon function called iff the supertype is Pokémon
         if (jsonObject.getString("supertype").equals("Pokémon")) {
@@ -175,7 +170,6 @@ public class Card implements Serializable{
         //not every pokemon has a retreatcost so this needs to be checked
         if (jsonObject.has("retreatCost")) {
             JSONArray retreatCostArray = jsonObject.getJSONArray("retreatCost");
-            Log.d("COST", retreatCostArray.getString(0));
             this.retreatCost = new Tuple(String.valueOf(retreatCostArray.length()), retreatCostArray.getString(0));
         }
 

@@ -189,7 +189,6 @@ public class CardActivity extends AppCompatActivity {
 
     //function called from the Asynctasks to put picture in the imageView on the left
     public void setBitmap(Bitmap picture) {
-        Log.d("BITMAP", "HERE");
         cardImage.setImageBitmap(picture);
     }
 
