@@ -3,8 +3,8 @@ package com.example.danyllo.pokedeck;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -90,6 +90,8 @@ public class HandActivity extends AppCompatActivity {
     // and give that as a score to the hand which is later added to the deck
     public void giveRating(View view) {
         String input = ratingET.getText().toString().trim();
+        //To hide the soft keyboard after click
+        ratingET.onEditorAction(EditorInfo.IME_ACTION_DONE);
         Scanner numberScan = new Scanner(input);
         //No empty inputs
         if (input.length() == 0) {

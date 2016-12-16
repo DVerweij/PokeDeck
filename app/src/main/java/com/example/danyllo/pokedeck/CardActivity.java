@@ -73,8 +73,9 @@ public class CardActivity extends AppCompatActivity {
         }
         setUpDatabase();
         checkLogin();
-        //If coming from the random generated Hand activity, turn off signIn, add and deckButton
-        if (getIntent().getStringExtra("Activity").equals("Hand")) {
+        //If coming from the random generated Hand or Deck activity, turn off signIn, add and deckButton
+        String activityString = getIntent().getStringExtra("Activity");
+        if (activityString.equals("Hand") || activityString.equals("Deck")) {
             turnOffButtons();
         }
     }

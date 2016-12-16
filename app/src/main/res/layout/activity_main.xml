@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_watch_list"
     android:layout_width="match_parent"
@@ -13,53 +14,57 @@
     android:weightSum="1">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="88dp"
+        app:srcCompat="@drawable/pokedeck"
+        android:id="@+id/imageView2" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/username"
-            android:layout_weight="1" />
+<LinearLayout
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
 
-        <Button
-            android:text="Sign Out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signout"
-            android:onClick="logOut"
-            android:layout_weight="0.08" />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/username"
+    android:layout_weight="1" />
 
-    </LinearLayout>
-
-    <Button
-        android:text="Decklist"
-        android:layout_width="match_parent"
-        android:id="@+id/button"
-        android:onClick="goToDeckList"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_weight="0.03" />
-
-    <Button
-        android:text="Search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="searchCard"
-        android:id="@+id/button2"
-        android:layout_weight="0.03" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/cardList" />
+<Button
+    android:text="Sign Out"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/signout"
+    android:onClick="logOut"
+    android:layout_weight="0.08" />
 
 </LinearLayout>
+
+<Button
+android:text="Decklist"
+android:layout_width="match_parent"
+android:id="@+id/button"
+android:onClick="goToDeckList"
+android:layout_height="wrap_content" />
+
+<EditText
+android:layout_width="match_parent"
+android:layout_height="55dp"
+android:inputType="textPersonName"
+android:ems="10"
+android:id="@+id/editText" />
+
+<Button
+android:text="Search"
+android:layout_width="match_parent"
+android:layout_height="50dp"
+android:onClick="searchCard"
+android:id="@+id/button2" />
+
+<ListView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:id="@+id/cardList" />
+
+    </LinearLayout>

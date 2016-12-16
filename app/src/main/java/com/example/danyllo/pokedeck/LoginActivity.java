@@ -79,8 +79,9 @@ public class LoginActivity extends AppCompatActivity {
             notAnEmail.show();
         }
         String attemptPass = password.getText().toString();
-        if (attemptPass.length() < 3) {
-            Toast tooShort = Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT);
+        if (attemptPass.length() < 6) {
+            Toast tooShort = Toast.makeText(this, "At least 6 characters, please",
+                    Toast.LENGTH_SHORT);
             tooShort.show();
         } else if (!attemptPass.matches("^[a-zA-Z0-9!?]*$")) {
             Toast illegalChars = Toast.makeText(this,

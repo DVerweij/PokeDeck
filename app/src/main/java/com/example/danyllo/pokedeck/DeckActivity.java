@@ -47,20 +47,30 @@ public class DeckActivity extends AppCompatActivity {
 
 
     //Views
-    private TextView usernameView;
-    private TextView ratingView;
-    private Button logButton;
     private ListView deckList;
+    private Button generateButton;
+    private Button clearButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deck);
         checkLogin();
+        setButtons();
         setUpDatabase();
         setDeckFromActivity();
     }
 
+    //This function sets the buttons and makes them invisible
+    private void setButtons() {
+        generateButton = (Button) findViewById(R.id.button3);
+        clearButton = (Button) findViewById(R.id.button5);
+        generateButton.setVisibility(View.INVISIBLE);
+        clearButton.setVisibility(View.INVISIBLE);
+
+    }
+
+    //function which sets the deck back after having attained a new rating from HandActivity
     private void setDeckFromActivity() {
         if (getIntent().getStringExtra("Activity").equals("Hand")) {
             deck = (Deck) getIntent().getSerializableExtra("rating");
@@ -69,7 +79,7 @@ public class DeckActivity extends AppCompatActivity {
     }
 
     private void setRating() {
-        ratingView = (TextView) findViewById(R.id.deckRating);
+        TextView ratingView = (TextView) findViewById(R.id.deckRating);
         ratingView.setText("This deck scores a " + String.valueOf(deck.getAvgRating()));
     }
 
@@ -110,8 +120,8 @@ public class DeckActivity extends AppCompatActivity {
         //Courtesy of: http://www.androidhive.info/2016/06/android-getting-started-firebase-simple-login-registration-auth/
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
-        usernameView = (TextView) findViewById(R.id.username);
-        logButton = (Button) findViewById(R.id.signout);
+        TextView usernameView = (TextView) findViewById(R.id.username);
+        Button logButton = (Button) findViewById(R.id.signout);
         //Set data on the logged-in user
         String viewString = "Logged in as: " + user.getEmail();
         usernameView.setText(viewString);
@@ -130,6 +140,9 @@ public class DeckActivity extends AppCompatActivity {
     private void showDeck() {
         deckList = (ListView) findViewById(R.id.deckList);
         deckList.setAdapter(new CardsAdapter(this, deck.getCardList()));
+        //Once the deck is loaded, I make the buttons visible again
+        generateButton.setVisibility(View.VISIBLE);
+        clearButton.setVisibility(View.VISIBLE);
         deckList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
