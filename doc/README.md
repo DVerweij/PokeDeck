@@ -30,9 +30,13 @@ The MainActivity handles the search functionality of the app.
 Some key factors of this Activity:
 
 -If not logged in, the LoginActivity will be opened before this activity prompting the user to sign in or up, or choose to continue not logged in.
+
 -The MainActivity can directly go to the DeckActivity if logged in.
+
 -The search button converts the text given by the user to an API request to pokemontcg.io
+
 -The cards found are added to a ListView where the card names and IDs are displayed as well as the typing of the pokemon and basic energy cards.
+
 -The ListView items can be clicked and clicking will bring the user to the CardActivity.
 
 ##CardActivity
@@ -42,7 +46,9 @@ Some key factors of this Activity:
 The CardActivity shows the Card's picture and information (found in the Card object).
 
 -ASyncTask is used to parse the URL and attain a BitMap and this BitMap is placed in the ImageView.
+
 -From the CardActivity, you can go to the DeckActivity or add the card shown in the Activity to the deck.
+
 -The buttons to add or go to the decklist are only displayed if the activity is reached from the MainActivity. If reached from the Deck or HandActivity, the buttons will be made invisible.
 
 ##DeckActivity
@@ -52,9 +58,13 @@ The CardActivity shows the Card's picture and information (found in the Card obj
 The DeckActivity shows a list of the cards you have in the deck and allows you to generate hands and rate said hands.
 
 -You can go back to the MainActivity from this page.
+
 -Signing out from this page brings the user back to the MainActivity.
+
 -The generate random hand button triggers the HandActivity which handles the hand generation.
+
 -You can also clear your deck and delete single list items by long-clicking.
+
 -Clicking a card brings the user to the CardActivity.
 
 ##HandActivity
@@ -64,7 +74,9 @@ The DeckActivity shows a list of the cards you have in the deck and allows you t
 The HandActivity takes the deck attained from DeckActivity and generates a random 7 card hand.
 
 -The rating given is saved to the deck object and is then returned to the DeckActivity.
+
 -If the 7 card hand does NOT contain a Basic Pokémon, the hand is recursively regenerated.
+
 -Clicking on a card in the hand brings the user to the CardActivity.
 
 ##LoginActivity
@@ -74,7 +86,9 @@ The HandActivity takes the deck attained from DeckActivity and generates a rando
 The LoginActivity handles both the signing up and signing in of users.
 
 -The authentication is kept quite simple with the signing up ad signing in in the same activity.
+
 -No verification or password recovery implemented yet.
+
 -Offline button allows users to not log in at the cost of some user-only functionalities.
 
 ##CardsAdapter
@@ -82,7 +96,9 @@ The LoginActivity handles both the signing up and signing in of users.
 This Adapter extending the standard ArrayAdapter maps the Cards to a ListView item. This item will display the name and ID of the cards but also the typing of the cards if applicable (Basic Energy or Pokémon).
 
 -This Adapter extends ArrayAdapter\<Card\>
+
 -Each row of the ListView contains two ImageViews (one for each type) and a TextView
+
 -The icons for typing are added on a switch statement basis.
 
 
